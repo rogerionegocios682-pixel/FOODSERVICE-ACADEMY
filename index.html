@@ -2,700 +2,76 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodService Academy - Plataforma de Estudos</title>
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121214; color: #e1e1e6; padding: 40px 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; }
+        header h1 { color: #ff9000; font-size: 28pt; }
+        
+        .view-state { display: none; }
+        .view-section { display: none; background-color: #202024; border-radius: 12px; padding: 40px; }
+        #state-aluno:checked ~ #student-dashboard-view { display: block; }
 
-        body {
-            background-color: #121214;
-            color: #e1e1e6;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        header h1 {
-            color: #ff9000;
-            font-size: 28pt;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            color: #8f9ba8;
-            font-size: 12pt;
-        }
-
-        /* --- CONTROLADOR DE VISIBILIDADE --- */
-        input[type="radio"].view-state {
-            display: none;
-        }
-
-        .view-section {
-            display: none;
-            background-color: #202024;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
-
-        #state-login:checked ~ #login-view,
-        #state-master:checked ~ #master-panel-view,
-        #state-aluno:checked ~ #student-dashboard-view {
-            display: block;
-        }
-
-        /* --- TELA DE LOGIN --- */
-        #login-view {
-            max-width: 450px;
-            margin: 60px auto 0 auto;
-            border: 2px solid #004b87;
-        }
-
-        .view-title {
-            font-size: 16pt;
-            color: #ffffff;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #c4c4cc;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: #121214;
-            border: 1px solid #29292e;
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 11pt;
-            outline: none;
-        }
-
-        .btn-blue {
-            width: 100%;
-            padding: 14px;
-            background-color: #004b87;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 11pt;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .btn-orange {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: #ff9000;
-            color: #121214;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 11pt;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* --- PAINEL MASTER --- */
-        #master-panel-view {
-            border-top: 4px solid #ff9000;
-        }
-
-        .admin-grid, .course-layout {
-            display: flex;
-            gap: 30px;
-        }
-
-        .col-half {
-            flex: 1;
-        }
-
-        .section-subtitle {
-            font-size: 13pt;
-            color: #ff9000;
-            margin-bottom: 20px;
-            border-left: 4px solid #004b87;
-            padding-left: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #121214;
-            color: #ff9000;
-            padding: 12px;
-            border-bottom: 2px solid #29292e;
-            text-align: left;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #29292e;
-            color: #c4c4cc;
-        }
-
-        /* --- ÁREA DO ALUNO --- */
-        #student-dashboard-view {
-            border-top: 4px solid #004b87;
-        }
-
-        .modules-sidebar {
-            width: 340px;
-            background-color: #121214;
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid #29292e;
-        }
-
-        .module-item {
-            padding: 14px 12px;
-            background-color: #202024;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 10pt;
-            border-left: 3px solid #8f9ba8;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .module-item:hover {
-            background-color: #29292e;
-        }
-
-        .module-item.active {
-            background-color: #004b87;
-            color: white;
-            border-left-color: #ff9000;
-        }
-
-        .module-item.completed {
-            border-left-color: #00b37e;
-        }
-
-        .video-container {
-            flex: 1;
-            background-color: #121214;
-            border-radius: 8px;
-            padding: 35px;
-            border: 1px solid #29292e;
-            min-height: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* --- NOVOS ESTILOS DE MÍDIA COMPATÍVEIS --- */
-        .media-wrapper {
-            margin-bottom: 25px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #29292e;
-            background: #000;
-        }
-
-        .video-responsive {
-            position: relative;
-            padding-bottom: 56.25%; /* Proporção 16:9 */
-            height: 0;
-            overflow: hidden;
-        }
-
-        .video-responsive iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .lesson-banner {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            border-bottom: 3px solid #ff9000;
-        }
-
-        .content-body {
-            line-height: 1.7;
-            color: #c4c4cc;
-            font-size: 11pt;
-            margin-bottom: 30px;
-        }
-
-        .content-body h3 {
-            color: #ffffff;
-            margin: 20px 0 10px 0;
-            font-size: 13pt;
-        }
-
-        .content-body h4 {
-            color: #ff9000;
-            margin: 15px 0 5px 0;
-            font-size: 11pt;
-        }
-
-        .content-body ul, .content-body ol {
-            margin-left: 20px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .content-body p {
-            margin-bottom: 12px;
-        }
-
-        .content-body table {
-            margin: 15px 0;
-            width: 100%;
-        }
-
-        .content-body th, .content-body td {
-            padding: 8px;
-            border: 1px solid #29292e;
-        }
-
-        .btn-logout {
-            float: right;
-            background-color: #c53030;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        textarea.input-atividade {
-            width: 100%;
-            height: 80px;
-            background-color: #121214;
-            border: 1px solid #29292e;
-            border-radius: 6px;
-            color: white;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            resize: vertical;
-        }
+        .course-layout { display: flex; gap: 30px; }
+        .modules-sidebar { width: 340px; background-color: #121214; padding: 15px; border: 1px solid #29292e; border-radius: 8px; }
+        .module-item { padding: 14px; background-color: #202024; margin-bottom: 10px; cursor: pointer; border-left: 3px solid #8f9ba8; }
+        .module-item.active { background-color: #004b87; color: white; border-left-color: #ff9000; }
+        
+        .video-container { flex: 1; min-height: 450px; background: #000; border-radius: 8px; overflow: hidden; position: relative; }
+        .video-container iframe { width: 100%; height: 450px; border: 0; }
+        
+        .btn-blue { width: 100%; padding: 14px; background-color: #004b87; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>FoodService Academy</h1>
-        <p>Capacitação Profissional & Segurança Alimentar</p>
-    </header>
+    <header><h1>FoodService Academy</h1></header>
 
-    <input type="radio" id="state-login" name="view-control" class="view-state" checked>
-    <input type="radio" id="state-master" name="view-control" class="view-state">
-    <input type="radio" id="state-aluno" name="view-control" class="view-state">
-
-    <div id="login-view" class="view-section">
-        <div class="view-title">Acessar a Plataforma</div>
-        <div class="form-group">
-            <label>Usuário ou E-mail Cadastrado</label>
-            <input type="text" id="user-input" placeholder="Ex: Lucas Pereira ou rogerio">
-        </div>
-        <div class="form-group">
-            <label>Senha de Acesso</label>
-            <input type="password" id="pass-input" placeholder="Sua senha">
-        </div>
-        <button class="btn-blue" style="margin-bottom: 15px;" onclick="autenticarUsuarioLocal()">Entrar na Plataforma</button>
-        <a href="https://wa.me/5581973301302" target="_blank" class="btn-orange">Solicitar Matrícula Comercial</a>
-    </div>
-
-    <div id="master-panel-view" class="view-section">
-        <button class="btn-logout" onclick="realizarLogout()">Sair do Painel Master</button>
-        <div class="view-title" style="text-align: left; margin-bottom: 30px;">Painel Master | Gestão Rogério</div>
-        
-        <div class="admin-grid">
-            <div class="col-half">
-                <div class="section-subtitle">Matricular Novo Profissional (Liberar Curso)</div>
-                <div class="form-group">
-                    <label>Nome Completo do Aluno</label>
-                    <input type="text" id="novo-nome" placeholder="Ex: Carlos Silva">
-                </div>
-                <div class="form-group">
-                    <label>Trilha de Ensino</label>
-                    <select id="novo-curso">
-                        <option value="Garçom">Garçom Profissional</option>
-                        <option value="Cozinheiro">Cozinheiro Profissional</option>
-                        <option value="Barman">Barman & Mixologia</option>
-                        <option value="Food Business">Food Business: Gestão de Restaurantes</option>
-                    </select>
-                </div>
-                <button class="btn-orange" onclick="matricularAlunoPainel()">Confirmar e Liberar Curso para o Aluno</button>
-            </div>
-
-            <div class="col-half">
-                <div class="section-subtitle">Alunos Ativos & Credenciais Geradas</div>
-                <table>
-                    <thead>
-                        <tr><th>Nome (Login)</th><th>Senha Gerada</th><th>Curso Liberado</th></tr>
-                    </thead>
-                    <tbody id="tabela-alunos-ativos">
-                        <tr>
-                            <td><strong>Lucas Pereira</strong></td>
-                            <td><code style="background:#121214; padding:2px 6px; border-radius:4px; color:#00b37e;">aluno123</code></td>
-                            <td>Garçom Profissional</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <input type="radio" id="state-aluno" name="view" class="view-state" checked>
 
     <div id="student-dashboard-view" class="view-section">
-        <button class="btn-logout" onclick="realizarLogout()">Sair do Curso</button>
-        <div class="view-title" style="text-align: left;" id="boas-vindas-aluno">Área de Estudos</div>
-        
+        <h2 style="margin-bottom:20px;">Curso: Garçom Profissional</h2>
         <div class="course-layout">
-            <div class="modules-sidebar">
-                <div class="section-subtitle" style="font-size:11pt; margin-bottom:15px;">Módulos do seu Curso</div>
-                <div id="container-modulos-dinamicos"></div>
-            </div>
-
-            <div class="video-container">
-                <div>
-                    <h2 style="color:#ff9000; margin-bottom:15px;" id="titulo-aula-ativa">Selecione uma aula</h2>
-                    
-                    <!-- Elementos de Mídia Dinâmicos -->
-                    <div class="media-wrapper">
-                        <img id="banner-aula" class="lesson-banner" src="" alt="Banner da Aula" style="display:none;">
-                        <div id="video-aula-container" class="video-responsive" style="display:none;">
-                            <iframe id="video-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-
-                    <div class="content-body" id="corpo-conteudo-aula"></div>
+            <div class="modules-sidebar" id="sidebar">
                 </div>
-                <div id="area-botoes-progresso"></div>
+            <div class="video-container">
+                <iframe id="video-frame" src="https://www.youtube.com/embed/5Uo8x-cI_3E" allowfullscreen></iframe>
+                <div id="conteudo-aula" style="padding:20px; color:#c4c4cc;">Selecione uma aula ao lado.</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Conteúdos, imagens e links de vídeos baseados no ecossistema e referências da playlist
-    const apostilasCursos = {
-        "Garçom": [
-            {
-                titulo: "Módulo 1: O Garçom como Protagonista do Negócio",
-                banner: "https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/videoseries?list=PLJ-R1pfF_doKBGU2jasEPm1nk2Jfwh43B",
-                texto: "<p>O garçom é a peça-chave para enxergar a mudança de mentalidade necessária para o sucesso de bares e restaurantes. Ao contrário do que muitos pensam, o garçom não é apenas um executor de pedidos: ele é a extensão da marca, o porta-voz da experiência que o estabelecimento deseja proporcionar.</p><h3>A Importância Estratégica do Atendimento</h3><p>Atendimento é estratégia. Estudos indicam que a principal razão para a perda de clientes em bares e restaurantes é a experiência de atendimento. Um garçom bem treinado é capaz de reverter situações adversas, solucionar problemas com empatia e, principalmente, fidelizar clientes.</p><h3>Anticipação de Necessidades</h3><ul><li>Oferecer um guardanapo extra antes que seja pedido.</li><li>Perceber quando uma taça está vazia.</li><li>Entender o momento em que o cliente não quer ser interrompido.</li></ul><h4>Boa Prática Recomendada:</h4><p>Reserve cinco minutos antes do início do expediente para revisar mentalmente os valores do restaurante, as sugestões do dia e os detalhes do cardápio. Comece seu atendimento com uma apresentação simples e confiante: <em>'Boa noite, seja muito bem-vindo! Eu sou o [seu nome] e vou cuidar da sua experiência hoje.'</em></p>"
-            },
-            {
-                titulo: "Módulo 2: Primeira Impressão, Abordagem e Postura Profissional",
-                banner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/videoseries?list=PLJ-R1pfF_doKBGU2jasEPm1nk2Jfwh43B&index=2",
-                texto: "<p>A entrada na mesa é o seu momento de brilhar. Apresentar-se com um sorriso sincero, com olhar atento e postura ereta gera segurança imediata ao cliente. É fundamental fazer a leitura rápida da mesa: identificar se é um grupo informal, um encontro romântico ou uma reunião de negócios, ajustando seu tom de voz, vocabulário e energia para a abordagem correta.</p><h3>A Linguagem Corporal</h3><p>Andar com pressa, cruzar os braços, olhar para o lado ou manter as mãos nos bolsos transmite desinteresse. O cliente percebe como você se apresenta. Mantenha contato visual breve e respeitoso, incline levemente o corpo ao se aproximar e esteja visivelmente disponível.</p><h3>Apresentação Pessoal Obrigatória</h3><ul><li>Uniforme impecavelmente limpo e passado.</li><li>Unhas bem cuidas e asseadas.</li><li>Cabelo totalmente preso (se for longo) e sapatos limpos.</li></ul><h4>Atividade Prática de Fixação:</h4><p>Descreva como você ajustaria sua abordagem para um casal em clima romântico vs uma mesa corporativa de negócios:</p><textarea class='input-atividade' placeholder='Digite sua resposta aqui...'></textarea>"
-            },
-            {
-                titulo: "Módulo 3: Comunicação que Conquista: Escuta Ativa e Encantamento",
-                banner: "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/videoseries?list=PLJ-R1pfF_doKBGU2jasEPm1nk2Jfwh43B&index=3",
-                texto: "<p>Saber ouvir é mais importante que falar. O garçom de excelência escuta o que é dito e o que é sentido. Os princípios da escuta ativa determinam que você deve repetir parte do pedido para confirmar, usar o nome do cliente se possível, manter contato visual sem ser invasivo e evitar jargões ou informalidade excessiva.</p><h3>Encantamento e Técnicas de Vendas</h3><p>Pequenos gestos viram grandes fidelizações. O garçom estrategista entende o que é margem de lucro, sabe o valor agregado dos pratos, conhece as metas do salão e atua como um garçom vendedor para aumentar o ticket médio da casa de forma natural e consultiva.</p><h4>Boa Prática:</h4><p>Converse com o gerente para conhecer os pratos com maior margem de lucro ou que estão sendo promovidos no momento. Mantenha um pequeno caderno no bolso do avental com essas informações e use-o como guia para suas sugestões.</p>"
-            },
-            {
-                titulo: "Módulo 4: Higiene, Atendimento sob Pressão e Avaliação Final",
-                banner: "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/videoseries?list=PLJ-R1pfF_doKBGU2jasEPm1nk2Jfwh43B&index=4",
-                texto: "<p>Higiene, aparência e boas práticas são o básico que encanta. Nos dias de salão lotado, o atendimento sob pressão diferencia os melhores profissionais: manter a calma, a elegância e a precisão técnica mesmo nos momentos de pico operacional garante a excelência do ecossistema de resultados do restaurante.</p><p style='margin-top:15px; color:#ff9000; font-weight:bold;'>Parabéns! Você passou por todo o conteúdo teórico e prático de Atendimento e Vendas. Clique abaixo para emitir sua certificação oficial.</p>"
-            }
-        ],
-        "Cozinheiro": [
-            {
-                titulo: "Módulo 1: Higiene Alimentar e RDC 216 ANVISA",
-                banner: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/eXbEpxvjM7E",
-                texto: "Na cozinha, o controle sanitário é rigoroso para evitar contaminações cruzadas. <h3>Regras de Ouro:</h3><ul><li>Separação estrita de insumos crus e cozidos.</li><li>Higienização química de hortifrútis utilizando soluções cloradas adequadas.</li><li>Uso obrigatório de touca protetora cobrindo totalmente os cabelos.</li></ul>"
-            },
-            {
-                titulo: "Módulo 2: Técnicas de Corte e Organização (Mise en Place)",
-                banner: "https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/1_7k0O_rYgE",
-                texto: "O Mise en Place é a alma de um serviço rápido e padronizado na cozinha quente ou fria. <h3>Fundamentos:</h3><ul><li>Organização prévia de recipientes com ingredientes porcionados, picados e pesados.</li><li>Domínio de cortes clássicos (Julienne, Brunoise, Chiffonade).</li><li>Manutenção da afiação correta das facas de trabalho.</li></ul>"
-            },
-            {
-                titulo: "Módulo 3: Cocção, Caldos e Molhos Base",
-                banner: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/vO-6gX-r-eM",
-                texto: "Compreender os métodos de transferência de calor é indispensável para extrair o melhor sabor dos alimentos. <h3>Conceitos Práticos:</h3><ul><li>Cocção por calor úmido (vapor, fervura) vs Calor seco (grelhar, assar).</li><li>Preparo correto de caldos base (Mirepoix + Carcaças) sem deixar ferver em excesso.</li></ul>"
-            },
-            {
-                titulo: "Módulo 4: Montagem de Pratos e Encerramento",
-                banner: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/v0XG4t95P6Q",
-                texto: "O cliente come primeiro com os olhos. A padronização garante a mesma experiência para todos. <h3>Critérios:</h3><ul><li>Limpeza das bordas dos pratos antes de saírem na boqueta.</li><li>Controle rigoroso de temperatura e porcionamento exato dos insumos.</li></ul><p style='margin-top:15px; color:#ff9000; font-weight:bold;'>Parabéns! Você concluiu a Trilha Teórica de Cozinha. Emita seu documento de conclusão abaixo.</p>"
-            }
-        ],
-        "Barman": [
-            {
-                titulo: "Módulo 1: Introdução à Coquetelaria, História e Espaços de Bar",
-                banner: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/7V3y2K-m8Ew",
-                texto: "<p>A história da coquetelaria remonta aos antigos boticários hindus e evoluiu até a criação do termo <em>cocktail</em> em 1806. Jerry Thomas lançou o primeiro guia oficial em 1862.</p><h3>Tipos de Estabelecimentos e Atuação</h3><ul><li><strong>American Bar:</strong> Caracterizado por um longo balcão e prateleiras iluminadas.</li><li><strong>Pub Britânico:</strong> Focado em cervejas premium e destilados.</li></ul>"
-            },
-            {
-                titulo: "Módulo 2: A Teoria das Cores aplicada ao Balcão",
-                banner: "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/6_rU66M1M58",
-                texto: "<p>A combinação visual de cores atrai o olhar e é compensada pelo paladar.</p><h3>Classificação das Cores:</h3><ul><li><strong>Primárias:</strong> Azul, amarelo e vermelho.</li><li><strong>Secundárias:</strong> Mistura de duas primárias.</li></ul><h4>Atividade Teórica:</h4><p>Como a temperatura visual (tons frios e quentes) influencia a escolha de um drink pelo cliente no verão?</p><textarea class='input-atividade' placeholder='Escreva suas observações...'></textarea>"
-            },
-            {
-                titulo: "Módulo 3: Equipamentos, Utensílios e Organização (Mise en Place)",
-                banner: "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/lby4rT9gWwI",
-                texto: "<p>Para a execução perfeita das receitas, conheça as ferramentas essenciais:</p><ul><li><strong>Coqueteleira:</strong> Mistura ingredientes de densidades diferentes.</li><li><strong>Bailarina:</strong> Colher de cabo longo para misturas.</li></ul>"
-            },
-            {
-                titulo: "Módulo 4: Vidraria (Copos), Higiene RDC 216 e Conclusão",
-                banner: "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/U3lYorS46Y0",
-                texto: "<p>O formato e o tamanho do copo interferem diretamente na percepção dos aromas e no sabor das bebidas.</p><h3>Segurança Alimentar (RDC 216)</h3><p>O gelo para drinks deve ser manuseado unicamente com pás ou pinças higiênicas.</p><p style='margin-top:15px; color:#ff9000; font-weight:bold;'>Parabéns! Você finalizou os estudos técnicos da trilha de Barman. Clique abaixo para gerar seu certificado.</p>"
-            }
-        ],
-        "Food Business": [
-            {
-                titulo: "Módulo 1: Legislação Sanitária RDC 216",
-                banner: "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/WlP6pD7l6hI",
-                texto: "Gestores precisam estruturar o Manual de Boas Práticas e os POPs. <h3>Responsabilidades:</h3><ul><li>Garantir planilhas de recebimento e controle de temperatura diárias de freezers.</li></ul>"
-            },
-            {
-                titulo: "Módulo 2: Engenharia de Cardápio e Precificação",
-                banner: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/37B1zIlye2Q",
-                texto: "Cardápio não é apenas uma lista de preços, é uma ferramenta activa de vendas. <h3>Estratégias:</h3><ul><li>Cálculo rigoroso do CMV por ficha técnica.</li></ul>"
-            },
-            {
-                titulo: "Módulo 3: Gestão de Estoque, Compras e Desperdício",
-                banner: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/9eH4F0tK3uM",
-                texto: "O lucro de um restaurante muitas vezes se perde na lixeira ou na armazenagem incorreta. <h3>Métodos:</h3><ul><li>Aplicação rígida do método PVPS (Primeiro que Vence, Primeiro que Sai).</li></ul>"
-            },
-            {
-                titulo: "Módulo 4: Liderança e Conclusão Estratégica",
-                banner: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-                videoUrl: "https://www.youtube.com/embed/G6gE3R-rL04",
-                texto: "Gerenciar pessoas no ramo de alimentação exige empatia e metas claras. <p style='margin-top:15px; color:#ff9000; font-weight:bold;'>Parabéns! Trilha de Gestão Corporativa finalizada. Clique abaixo para emitir o seu certificado.</p>"
-            }
-        ]
-    };
-
-    let alunosMatriculados = [
-        { nome: "Lucas Pereira", senha: "aluno123", curso: "Garçom" }
+    // Dicionário com os links que você forneceu
+    const aulas = [
+        { titulo: "Aula 1: O Garçom Protagonista", video: "https://www.youtube.com/embed/5Uo8x-cI_3E", desc: "Introdução ao papel do garçom." },
+        { titulo: "Aula 2: Primeira Impressão", video: "https://www.youtube.com/embed/9yJFaDpJb8A", desc: "Abordagem e postura profissional." },
+        { titulo: "Aula 3: Comunicação e Escuta", video: "https://www.youtube.com/embed/Js-CPR5De24", desc: "Técnicas de escuta ativa." },
+        { titulo: "Aula 4: Atendimento sob Pressão", video: "https://www.youtube.com/embed/TXMbaSjaiqA", desc: "Excelência em momentos críticos." }
     ];
-    
-    let alunoAtivoNome = "";
-    let alunoAtivoCurso = "";
-    let moduloFocoAtual = 0;
 
-    function autenticarUsuarioLocal() {
-        const usuarioDigitado = document.getElementById('user-input').value.trim();
-        const senhaDigitada = document.getElementById('pass-input').value.trim();
-
-        if (usuarioDigitado === "" || senhaDigitada === "") {
-            alert("Por favor, preencha o usuário e a senha.");
-            return;
-        }
-
-        if (usuarioDigitado.toLowerCase() === "rogerio" && senhaDigitada === "123") {
-            document.getElementById('state-master').checked = true;
-            return;
-        }
-
-        let achouAluno = alunosMatriculados.find(a => 
-            a.nome.toLowerCase() === usuarioDigitado.toLowerCase() && a.senha === senhaDigitada
-        );
-
-        if (achouAluno) {
-            alunoAtivoNome = achouAluno.nome;
-            alunoAtivoCurso = achouAluno.curso;
-            moduloFocoAtual = 0;
-            
-            document.getElementById('boas-vindas-aluno').innerHTML = `Olá, <strong>${alunoAtivoNome}</strong>! Trilha: <span style="color:#ff9000">${alunoAtivoCurso} Profissional</span>`;
-            
-            renderizarModulosAluno();
-            carregarDadosModulo(0);
-
-            document.getElementById('state-aluno').checked = true;
-        } else {
-            alert("Credenciais incorretas ou usuário não localizado!");
-        }
-    }
-
-    function renderizarModulosAluno() {
-        const containerModulos = document.getElementById('container-modulos-dinamicos');
-        containerModulos.innerHTML = "";
-        
-        const gradeModulos = apostilasCursos[alunoAtivoCurso];
-        
-        gradeModulos.forEach((mod, index) => {
-            let classeExtra = (index === moduloFocoAtual) ? "active" : "";
-            containerModulos.innerHTML += `<div class="module-item ${classeExtra}" id="mod-item-${index}" onclick="selecionarModuloDireto(${index})">${mod.titulo}</div>`;
+    function carregarSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        aulas.forEach((aula, index) => {
+            sidebar.innerHTML += `<div class="module-item" onclick="trocarAula(${index}, this)">${aula.titulo}</div>`;
         });
     }
 
-    function carregarDadosModulo(index) {
-        moduloFocoAtual = index;
-        const dadosGrade = apostilasCursos[alunoAtivoCurso][index];
-        const totalModulos = apostilasCursos[alunoAtivoCurso].length;
-
-        const itens = document.querySelectorAll('.module-item');
-        itens.forEach(i => i.classList.remove('active'));
-        document.getElementById(`mod-item-${index}`).classList.add('active');
-
-        document.getElementById('titulo-aula-ativa').innerText = dadosGrade.titulo;
-        document.getElementById('corpo-conteudo-aula').innerHTML = dadosGrade.texto;
-
-        // Controle e Atualização de Fotos e Vídeos Dinâmicos
-        const bannerImg = document.getElementById('banner-aula');
-        const videoContainer = document.getElementById('video-aula-container');
-        const videoIframe = document.getElementById('video-iframe');
-
-        if(dadosGrade.videoUrl) {
-            bannerImg.style.display = "none";
-            videoContainer.style.display = "block";
-            videoIframe.src = dadosGrade.videoUrl;
-        } else if(dadosGrade.banner) {
-            videoContainer.style.display = "none";
-            videoIframe.src = "";
-            bannerImg.style.display = "block";
-            bannerImg.src = dadosGrade.banner;
-        } else {
-            videoContainer.style.display = "none";
-            bannerImg.style.display = "none";
-            videoIframe.src = "";
-        }
-
-        const areaBotoes = document.getElementById('area-botoes-progresso');
-        if (index === totalModulos - 1) {
-            areaBotoes.innerHTML = `<button class="btn-orange" onclick="abrirDocumentoCertificado()">🎓 Concluir Curso e Emitir Certificado</button>`;
-        } else {
-            areaBotoes.innerHTML = `<button class="btn-blue" onclick="marcarEAvancar(${index})">✔ Marcar como Lido e Ir para Próximo Módulo</button>`;
-        }
-    }
-
-    function selecionarModuloDireto(index) {
-        carregarDadosModulo(index);
-    }
-
-    function marcarEAvancar(index) {
-        document.getElementById(`mod-item-${index}`).classList.add('completed');
-        carregarDadosModulo(index + 1);
-    }
-
-    function matricularAlunoPainel() {
-        const nome = document.getElementById('novo-nome').value.trim();
-        const curso = document.getElementById('novo-curso').value;
-
-        if (nome === "") {
-            alert("Insira o nome do profissional.");
-            return;
-        }
-
-        const primeiroNome = nome.split(" ")[0].toLowerCase();
-        const senhaGerada = primeiroNome + "123";
-
-        alunosMatriculados.push({ nome: nome, senha: senhaGerada, curso: curso });
+    function trocarAula(index, elemento) {
+        // Atualiza o link do iframe
+        document.getElementById('video-frame').src = aulas[index].video;
+        document.getElementById('conteudo-aula').innerText = aulas[index].desc;
         
-        document.getElementById('tabela-alunos-ativos').innerHTML += `<tr>
-            <td><strong>${nome}</strong></td>
-            <td><code style="background:#121214; padding:2px 6px; border-radius:4px; color:#00b37e;">${senhaGerada}</code></td>
-            <td>${curso} Profissional</td>
-        </tr>`;
-
-        alert(`Sucesso!\n\nCredenciais do Aluno:\n👤 Usuário: ${nome}\n🔑 Senha: ${senhaGerada}`);
-        document.getElementById('novo-nome').value = "";
+        // Estiliza o botão selecionado
+        document.querySelectorAll('.module-item').forEach(i => i.classList.remove('active'));
+        elemento.classList.add('active');
     }
 
-    function abrirDocumentoCertificado() {
-        const win = window.open('', '_blank');
-        win.document.write(`
-        <!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <title>Certificado - FoodService Academy</title>
-            <style>
-                @page { size: A4 landscape; margin: 0; }
-                *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-                body { width: 297mm; height: 210mm; background-color: #ffffff; display: block; overflow: hidden; }
-                .cert-container { width: 100%; height: 100%; display: table; table-layout: fixed; }
-                .left-col { display: table-cell; width: 42%; height: 100%; background-color: #ffffff; vertical-align: top; padding: 45px 50px; position: relative; }
-                .right-col { display: table-cell; width: 58%; height: 100%; background-color: #f7c331; vertical-align: top; padding: 45px 50px; }
-                .title-cert { font-size: 38pt; font-weight: 800; color: #121214; }
-                .student-name { font-size: 26pt; font-weight: 700; color: #121214; margin-top: 50mm; }
-                .sig-line { border-top: 1px solid #121214; margin-top: 45px; padding-top: 6px; font-weight: bold; }
-                .course-title { font-size: 22pt; font-weight: 800; color: #121214; margin-top: 15px; margin-bottom: 20mm; }
-                .btn-print { position: absolute; top: 20px; left: 20px; background: #121214; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-                @media print { .btn-print { display: none; } }
-            </style>
-        </head>
-        <body>
-            <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
-            <div class="cert-container">
-                <div class="left-col">
-                    <div class="title-cert">Certificado</div>
-                    <div style="font-size:10pt; margin-top:5px;">Emissão: 06/07/2026</div>
-                    <div class="student-name">${alunoAtivoNome}</div>
-                    <div style="position: absolute; bottom: 40px; width: 80%;">
-                        <div class="sig-line"></div>
-                        <div>Rogério Negócios - Diretor Geral</div>
-                    </div>
-                </div>
-                <div class="right-col">
-                    <div style="text-align: right; font-weight: 800; font-size: 16pt;">FOODSERVICE ACADEMY</div>
-                    <div style="font-size: 13.5pt; margin-top:30mm;">Concluiu com êxito o treinamento de:</div>
-                    <div class="course-title">${alunoAtivoCurso} Profissional</div>
-                </div>
-            </div>
-        </body>
-        </html>`);
-        win.document.close();
-    }
-
-    function realizarLogout() {
-        document.getElementById('state-login').checked = true;
-        document.getElementById('user-input').value = "";
-        document.getElementById('pass-input').value = "";
-    }
+    carregarSidebar();
 </script>
-
 </body>
 </html>
