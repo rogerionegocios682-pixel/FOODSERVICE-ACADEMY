@@ -2,16 +2,20 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodService Academy - Plataforma de Estudos</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #121214; color: #e1e1e6; padding: 40px 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
         header { text-align: center; margin-bottom: 40px; }
-        header h1 { color: #ff9000; font-size: 28pt; }
+        header h1 { color: #ff9000; font-size: 28pt; margin-bottom: 5px; }
         
         .view-state { display: none; }
-        .view-section { display: none; background-color: #202024; border-radius: 12px; padding: 40px; }
+        .view-section { display: none; background-color: #202024; border-radius: 12px; padding: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        
+        #state-login:checked ~ #login-view, 
+        #state-master:checked ~ #master-panel-view, 
         #state-aluno:checked ~ #student-dashboard-view { display: block; }
 
         .course-layout { display: flex; gap: 30px; }
@@ -23,6 +27,7 @@
         .video-container iframe { width: 100%; height: 450px; border: 0; }
         
         .btn-blue { width: 100%; padding: 14px; background-color: #004b87; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-logout { background-color: #c53030; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; float: right; }
     </style>
 </head>
 <body>
@@ -30,28 +35,37 @@
 <div class="container">
     <header><h1>FoodService Academy</h1></header>
 
-    <input type="radio" id="state-aluno" name="view" class="view-state" checked>
+    <input type="radio" id="state-login" name="view" class="view-state" checked>
+    <input type="radio" id="state-master" name="view" class="view-state">
+    <input type="radio" id="state-aluno" name="view" class="view-state">
+
+    <div id="login-view" class="view-section">
+        <h2 style="text-align:center; margin-bottom:20px;">Acessar Plataforma</h2>
+        <input type="text" id="user-input" placeholder="Usuário" style="width:100%; padding:12px; margin-bottom:10px; background:#121214; border:1px solid #29292e; color:white;">
+        <input type="password" id="pass-input" placeholder="Senha" style="width:100%; padding:12px; margin-bottom:10px; background:#121214; border:1px solid #29292e; color:white;">
+        <button class="btn-blue" onclick="autenticar()">Entrar</button>
+    </div>
 
     <div id="student-dashboard-view" class="view-section">
+        <button class="btn-logout" onclick="location.reload()">Sair</button>
         <h2 style="margin-bottom:20px;">Curso: Garçom Profissional</h2>
         <div class="course-layout">
-            <div class="modules-sidebar" id="sidebar">
-                </div>
+            <div class="modules-sidebar" id="sidebar"></div>
             <div class="video-container">
                 <iframe id="video-frame" src="https://www.youtube.com/embed/5Uo8x-cI_3E" allowfullscreen></iframe>
-                <div id="conteudo-aula" style="padding:20px; color:#c4c4cc;">Selecione uma aula ao lado.</div>
+                <div id="conteudo-aula" style="padding:20px; color:#c4c4cc;">Selecione um módulo ao lado.</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Dicionário com os links que você forneceu
+    // Links corrigidos e prontos para embed
     const aulas = [
-        { titulo: "Aula 1: O Garçom Protagonista", video: "https://www.youtube.com/embed/5Uo8x-cI_3E", desc: "Introdução ao papel do garçom." },
-        { titulo: "Aula 2: Primeira Impressão", video: "https://www.youtube.com/watch?v=9yJFaDpJb8A", desc: "Abordagem e postura profissional." },
-        { titulo: "Aula 3: Comunicação e Escuta", video: "https://www.youtube.com/watch?v=Js-CPR5De24", desc: "Técnicas de escuta ativa." },
-        { titulo: "Aula 4: Atendimento sob Pressão", video: "https://www.youtube.com/watch?v=TXMbaSjaiqA", desc: "Excelência em momentos críticos." }
+        { titulo: "Aula 1: O Garçom Protagonista", video: "https://www.youtube.com/embed/5Uo8x-cI_3E" },
+        { titulo: "Aula 2: Primeira Impressão", video: "https://www.youtube.com/embed/9yJFaDpJb8A" },
+        { titulo: "Aula 3: Comunicação e Escuta", video: "https://www.youtube.com/embed/Js-CPR5De24" },
+        { titulo: "Aula 4: Atendimento sob Pressão", video: "https://www.youtube.com/embed/TXMbaSjaiqA" }
     ];
 
     function carregarSidebar() {
@@ -62,16 +76,19 @@
     }
 
     function trocarAula(index, elemento) {
-        // Atualiza o link do iframe
         document.getElementById('video-frame').src = aulas[index].video;
-        document.getElementById('conteudo-aula').innerText = aulas[index].desc;
-        
-        // Estiliza o botão selecionado
         document.querySelectorAll('.module-item').forEach(i => i.classList.remove('active'));
         elemento.classList.add('active');
     }
 
-    carregarSidebar();
+    function autenticar() {
+        if(document.getElementById('user-input').value === "rogerio") {
+            document.getElementById('state-master').checked = true;
+        } else {
+            document.getElementById('state-aluno').checked = true;
+            carregarSidebar();
+        }
+    }
 </script>
 </body>
 </html>
